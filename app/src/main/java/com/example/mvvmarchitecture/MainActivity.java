@@ -23,7 +23,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static final int ADD_NOTE_REQUEST = 1;
-    public static final int EDIT_NOTE_REQUEST = 1;
+    public static final int EDIT_NOTE_REQUEST = 2;
     private NoteViewModel noteViewModel;
 
 
@@ -108,7 +108,26 @@ public class MainActivity extends AppCompatActivity {
             Note note = new Note(title, description, priority);
             noteViewModel.insert(note);
             Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
-        } else {
+        } else if (requestCode == EDIT_NOTE_REQUEST && resultCode == RESULT_OK) {
+            int id = data.getIntExtra( AddEditNoteActivity.EXTRA_ID, -1 );
+
+            if( id == -1 ){
+                Toast.makeText(this, "Note can't be updated", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String title = data.getStringExtra(AddEditNoteActivity.EXTRA_TITLE);
+            String description = data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION);
+            int priority = data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY, 1);
+
+            Note note = new Note( title, description, priority );
+            note.setId( id );
+            noteViewModel.update( note );
+
+            Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
+        }
+
+        else {
             Toast.makeText(this, "Note not saved", Toast.LENGTH_SHORT).show();
         }
     }
