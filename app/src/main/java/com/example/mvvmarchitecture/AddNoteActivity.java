@@ -3,6 +3,7 @@ package com.example.mvvmarchitecture;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +13,9 @@ import android.widget.NumberPicker;
 import android.widget.Toast;
 
 public class AddNoteActivity extends AppCompatActivity {
+    public static final String EXTRA_TITLE = "com.example.mvvmarchitecture.EXTRA_TITLE";
+    public static final String EXTRA_DESCRIPTION = "com.example.mvvmarchitecture.EXTRA_DESCRIPTION";
+    public static final String EXTRA_PRIORITY = "com.example.mvvmarchitecture.EXTRA_PRIORITY";
 
     private EditText editTextTitle, editTextDescription;
     private NumberPicker numberPickerPriority;
@@ -53,6 +57,7 @@ public class AddNoteActivity extends AppCompatActivity {
         }
     }
 
+    //Saving Data
     private void saveNote() {
 
         String title = editTextTitle.getText().toString();
@@ -64,6 +69,13 @@ public class AddNoteActivity extends AppCompatActivity {
             return;
         }
 
-        
+        Intent data = new Intent();
+        data.putExtra( EXTRA_TITLE, title );
+        data.putExtra( EXTRA_DESCRIPTION, description );
+        data.putExtra( EXTRA_PRIORITY, priority );
+
+        setResult( RESULT_OK, data);
+        finish();
+
     }
 }
