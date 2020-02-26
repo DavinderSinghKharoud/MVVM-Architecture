@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             String title = data.getStringExtra( AddNoteActivity.EXTRA_TITLE );
             String description = data.getStringExtra( AddNoteActivity.EXTRA_DESCRIPTION );
             int priority = data.getIntExtra( AddNoteActivity.EXTRA_PRIORITY, 1 );
-            
+
             Note note = new Note( title, description, priority );
             noteViewModel.insert( note );
             Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
