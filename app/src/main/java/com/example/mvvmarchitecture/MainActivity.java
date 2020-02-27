@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Note> notes) {
                 //update Recyclerview
-                noteAdapter.setNotes(notes);
+                noteAdapter.submitList( notes );
             }
         });
 
@@ -82,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
         noteAdapter.setOnItemClickListener(new NoteAdapter.onItemClickListener() {
             @Override
             public void onItemClick(Note note) {
-                Intent intent = new Intent( MainActivity.this, AddEditNoteActivity.class );
+                Intent intent = new Intent(MainActivity.this, AddEditNoteActivity.class);
 
                 intent.putExtra(AddEditNoteActivity.EXTRA_ID, note.getId());
-                intent.putExtra( AddEditNoteActivity.EXTRA_TITLE, note.getTitle());
-                intent.putExtra( AddEditNoteActivity.EXTRA_DESCRIPTION, note.getDescription());
-                intent.putExtra( AddEditNoteActivity.EXTRA_PRIORITY, note.getPriority());
+                intent.putExtra(AddEditNoteActivity.EXTRA_TITLE, note.getTitle());
+                intent.putExtra(AddEditNoteActivity.EXTRA_DESCRIPTION, note.getDescription());
+                intent.putExtra(AddEditNoteActivity.EXTRA_PRIORITY, note.getPriority());
 
 
                 startActivityForResult(intent, EDIT_NOTE_REQUEST);
@@ -108,10 +108,11 @@ public class MainActivity extends AppCompatActivity {
             Note note = new Note(title, description, priority);
             noteViewModel.insert(note);
             Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
-        } else if (requestCode == EDIT_NOTE_REQUEST && resultCode == RESULT_OK) {
-            int id = data.getIntExtra( AddEditNoteActivity.EXTRA_ID, -1 );
 
-            if( id == -1 ){
+        } else if (requestCode == EDIT_NOTE_REQUEST && resultCode == RESULT_OK) {
+            int id = data.getIntExtra(AddEditNoteActivity.EXTRA_ID, -1);
+
+            if (id == -1) {
                 Toast.makeText(this, "Note can't be updated", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -120,14 +121,12 @@ public class MainActivity extends AppCompatActivity {
             String description = data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION);
             int priority = data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY, 1);
 
-            Note note = new Note( title, description, priority );
-            note.setId( id );
-            noteViewModel.update( note );
+            Note note = new Note(title, description, priority);
+            note.setId(id);
+            noteViewModel.update(note);
 
             Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
-        }
-
-        else {
+        } else {
             Toast.makeText(this, "Note not saved", Toast.LENGTH_SHORT).show();
         }
     }
